@@ -16,6 +16,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
 
   QRViewController? controller;
   Barcode? result;
+  final ad = BarcodeFormat.values;
 
   @override
   void reassemble() {
@@ -95,13 +96,11 @@ class _QRScanScreenState extends State<QRScanScreen> {
       ),
       body: Column(
         children: [
-          Expanded(flex: 5, child: _buildQrView(context)),
+          Expanded(flex: 2, child: _buildQrView(context)),
           Expanded(
               flex: 1,
               child: Center(
-                child: (result != null)
-                    ? Text('QR DATA: ${result!.code}')
-                    : const Text('QR Kod Tarayın'),
+                child: (result != null) ? Text('QR DATA: ${result!.code}') : const Text('QR Kod Tarayın'),
               ))
         ],
       ),
@@ -121,10 +120,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 250.0
-        : 350.0;
+    var scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 250.0 : 350.0;
 
     return QRView(
       key: qrKey,
@@ -149,10 +145,9 @@ class _QRScanScreenState extends State<QRScanScreen> {
     }
   }
 
-  void onQRViewCamera(
-    QRViewController controller,
-  ) {
+  void onQRViewCamera(QRViewController controller) {
     this.controller = controller;
+
     controller.scannedDataStream.listen((scandata) {
       setState(() {
         result = scandata;
