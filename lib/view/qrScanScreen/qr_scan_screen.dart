@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScanScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   QRViewController? controller;
   Barcode? result;
   bool isScanning = true;
+  AudioPlayer player = AudioPlayer();
 
   @override
   void reassemble() {
@@ -109,16 +112,18 @@ class _QRScanScreenState extends State<QRScanScreen> {
     }
   }
 
-  void onQRViewCamera(QRViewController controller) {
+  void onQRViewCamera(QRViewController controller) async {
     this.controller = controller;
 
-    controller.scannedDataStream.listen((scandata) {
+    controller.scannedDataStream.listen((scandata) async {
       if (isScanning) {
         setState(() {
           result = scandata;
+          FlutterBeep.beep(true);
           isScanning = false; // Tarama durumu bayrağını güncelle
         });
-
+        await player.setSource(AssetSource('bip.mp3'));
+        await player.resume();
         Navigator.of(context).pop(result?.code ?? '');
       }
     });
@@ -127,6 +132,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   @override
   void dispose() {
     controller?.dispose();
+    player.dispose();
     super.dispose();
   }
 }
