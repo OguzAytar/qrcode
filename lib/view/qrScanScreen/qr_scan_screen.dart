@@ -113,20 +113,25 @@ class _QRScanScreenState extends State<QRScanScreen> {
   }
 
   void onQRViewCamera(QRViewController controller) async {
-    this.controller = controller;
+    try {
+      this.controller = controller;
 
-    controller.scannedDataStream.listen((scandata) async {
-      if (isScanning) {
-        setState(() {
-          result = scandata;
-          FlutterBeep.beep(true);
-          isScanning = false; // Tarama durumu bayrağını güncelle
-        });
+      controller.scannedDataStream.listen((scandata) async {
         await player.setSource(AssetSource('bip.mp3'));
         await player.resume();
-        Navigator.of(context).pop(result?.code ?? '');
-      }
-    });
+        if (isScanning) {
+          setState(() {
+            result = scandata;
+            FlutterBeep.beep(true);
+            isScanning = false; // Tarama durumu bayrağını güncelle
+          });
+
+          Navigator.of(context).pop(result?.code ?? '');
+        }
+      });
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override

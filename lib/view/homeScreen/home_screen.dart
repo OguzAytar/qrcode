@@ -1,7 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcode/view/qrGenerateScreen/qr_generate_screen.dart';
 import 'package:qrcode/view/qrScanScreen/qr_scan_screen.dart';
 
@@ -27,12 +25,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     await player.setSource(AssetSource('bip.mp3'));
-      //     await player.resume();
-      //   },
-      // ),
       appBar: AppBar(
         title: const Text('Ana Sayfa'),
         centerTitle: true,
