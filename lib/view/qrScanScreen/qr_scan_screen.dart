@@ -126,7 +126,8 @@ class _QRScanScreenState extends State<QRScanScreen> {
           result = scandata;
           isScanning = false; // Tarama durumu bayrağını güncelle
         });
-        Navigator.of(context).pop(result);
+
+        Navigator.of(context).pop(result?.code ?? '');
       }
     });
   }
