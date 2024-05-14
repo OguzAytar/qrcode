@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -16,7 +15,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
 
   QRViewController? controller;
   Barcode? result;
-  final ad = BarcodeFormat.values;
+  bool isScanning = true;
 
   @override
   void reassemble() {
@@ -28,9 +27,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
@@ -53,31 +50,6 @@ class _QRScanScreenState extends State<QRScanScreen> {
                   icon: flashIcon);
             },
           ),
-
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await controller?.toggleFlash();
-          //     setState(() {
-          //       flashStatus = !flashStatus;
-          //     });
-          //   },
-          //   child: FutureBuilder(
-          //     future: controller?.getFlashStatus(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         // Veri yüklenene kadar gösterilecek widget
-          //         return const Icon(
-          //             Icons.flash_on); // Veya başka bir yükleme animasyonu
-          //       } else if (snapshot.hasError) {
-          //         // Hata durumunda gösterilecek widget
-          //         return Text('Hata: ${snapshot.error}');
-          //       } else {
-          //         return Row(
-          //       }
-          //     },
-          //   ),
-          // ),
-
           FutureBuilder(
             future: controller?.getFlashStatus(),
             builder: (context, snapshot) {
@@ -149,9 +121,13 @@ class _QRScanScreenState extends State<QRScanScreen> {
     this.controller = controller;
 
     controller.scannedDataStream.listen((scandata) {
-      setState(() {
-        result = scandata;
-      });
+      if (isScanning) {
+        setState(() {
+          result = scandata;
+          isScanning = false; // Tarama durumu bayrağını güncelle
+        });
+        Navigator.of(context).pop(result);
+      }
     });
   }
 

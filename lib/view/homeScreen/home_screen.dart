@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcode/view/qrGenerateScreen/qr_generate_screen.dart';
 import 'package:qrcode/view/qrScanScreen/qr_scan_screen.dart';
 
@@ -10,6 +11,7 @@ class AnaSayfa extends StatefulWidget {
 }
 
 class _AnaSayfaState extends State<AnaSayfa> {
+  String? result;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,23 +26,26 @@ class _AnaSayfaState extends State<AnaSayfa> {
       body: Padding(
           padding: const EdgeInsets.all(12),
           child: Center(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+            child: Column(
+              children: [
+                const Spacer(),
+                Text(result ?? 'Barkod Okutulmadı'),
+                const Spacer(),
+                Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        final backResult = await Navigator.push<Barcode>(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const QRScanScreen(),
                             ));
+                        setState(() {
+                          result = backResult?.code;
+                        });
                       },
                       style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.black87),
-                          padding:
-                              MaterialStatePropertyAll(EdgeInsets.all(18))),
+                          backgroundColor: WidgetStatePropertyAll(Colors.black87),
+                          padding: WidgetStatePropertyAll(EdgeInsets.all(18))),
                       child: const Row(
                         children: [
                           Icon(
@@ -68,10 +73,8 @@ class _AnaSayfaState extends State<AnaSayfa> {
                             ));
                       },
                       style: const ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.black87),
-                          padding:
-                              MaterialStatePropertyAll(EdgeInsets.all(18))),
+                          backgroundColor: WidgetStatePropertyAll(Colors.black87),
+                          padding: WidgetStatePropertyAll(EdgeInsets.all(18))),
                       child: const Row(
                         children: [
                           Icon(
@@ -88,6 +91,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
                         ],
                       ))
                 ]),
+                const Spacer(),
+              ],
+            ),
           )),
     );
   }
