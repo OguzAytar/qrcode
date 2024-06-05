@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScanScreen extends StatefulWidget {
@@ -119,10 +118,11 @@ class _QRScanScreenState extends State<QRScanScreen> {
       controller.scannedDataStream.listen((scandata) async {
         await player.setSource(AssetSource('bip.mp3'));
         await player.resume();
+        await controller.pauseCamera();
         if (isScanning) {
           setState(() {
             result = scandata;
-            FlutterBeep.beep(true);
+
             isScanning = false; // Tarama durumu bayrağını güncelle
           });
 
