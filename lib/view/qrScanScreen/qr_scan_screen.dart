@@ -32,7 +32,7 @@ class _QRScanScreenState extends State<QRScanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         centerTitle: true,
         title: const Text('QR Kod Tara'),
         actions: [
@@ -85,19 +85,32 @@ class _QRScanScreenState extends State<QRScanScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    //  var scanArea = (MediaQuery.of(context).size.width < 500 || MediaQuery.of(context).size.height < 200) ? 150.0 : 250.0;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+
+    double cutOutHeight;
+    double cutOutWidth;
+
+    if (isPortrait) {
+      cutOutHeight = isTablet ? MediaQuery.sizeOf(context).height * 0.3 : MediaQuery.sizeOf(context).height * 0.17;
+      cutOutWidth = isTablet ? MediaQuery.sizeOf(context).width * 0.7 : MediaQuery.sizeOf(context).width * 0.95;
+    } else {
+      cutOutHeight = isTablet ? MediaQuery.sizeOf(context).height * 0.4 : MediaQuery.sizeOf(context).height * 0.25;
+      cutOutWidth = isTablet ? MediaQuery.sizeOf(context).width * 0.6 : MediaQuery.sizeOf(context).width * 0.8;
+    }
 
     return QRView(
       key: qrKey,
       onQRViewCreated: onQRViewCamera,
       overlay: QrScannerOverlayShape(
-          overlayColor: Colors.black87,
-          borderColor: Colors.blueGrey,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutHeight: MediaQuery.sizeOf(context).height * 0.17,
-          cutOutWidth: MediaQuery.sizeOf(context).width * 0.95),
+        overlayColor: Colors.black87,
+        borderColor: Theme.of(context).appBarTheme.backgroundColor!,
+        borderRadius: 10,
+        borderLength: 30,
+        borderWidth: 10,
+        cutOutHeight: cutOutHeight,
+        cutOutWidth: cutOutWidth,
+      ),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
