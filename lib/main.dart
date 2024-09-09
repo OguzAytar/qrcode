@@ -10,6 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'QR Code Scanner App', home: const AnaSayfa());
+    return const MaterialApp(title: 'QR Code Scanner App', home: AnaSayfa());
   }
 }
