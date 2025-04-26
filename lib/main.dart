@@ -10,6 +10,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'QR Code Scanner App', home: AnaSayfa());
+    return MaterialApp(
+        theme: ThemeData.light().copyWith(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xAA82161F),
+            foregroundColor: Colors.white,
+          ),
+          colorScheme: const ColorScheme.light(
+            primary: Color(0xAA82161F),
+            onPrimary: Colors.white,
+            secondary: Color(0xAA82161F),
+            onSecondary: Colors.white,
+          ),
+        ),
+        title: 'QR Code Scanner App',
+        home: const AnaSayfa());
   }
 }
