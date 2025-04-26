@@ -301,15 +301,6 @@ class _QRScanScreenState extends State<QRScanScreen> with SingleTickerProviderSt
         QRView(
           key: qrKey,
           onQRViewCreated: onQRViewCamera,
-          overlay: QrScannerOverlayShape(
-            overlayColor: Colors.black87,
-            borderColor: theme.colorScheme.secondary,
-            borderRadius: 12,
-            borderLength: 32,
-            borderWidth: 8,
-            cutOutHeight: cutOutHeight,
-            cutOutWidth: cutOutWidth,
-          ),
           onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
         ),
 
